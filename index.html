@@ -309,7 +309,7 @@
 <script>
 (function(){
   "use strict";
-  var API_LEADS = "https://veci-api-e0px.onrender.com/api/v1/leads";
+  var API_URL = "https://veci-api-e0px.onrender.com/api/v1/community-requests";
   var SHARE_URL = window.location.href;
   var SHARE_TEXT = "Estoy intentando llevar Veci a nuestro edificio 💚. Entre más vecinos la pidamos, antes llegará.";
   var $ = function(id){ return document.getElementById(id); };
@@ -352,9 +352,11 @@
     markErr(name,!okName); markErr(email,!okEmail);
     if(!okName||!okEmail){ sheet.classList.remove("shake"); void sheet.offsetWidth; sheet.classList.add("shake"); return; }
     var btn=$("submitBtn"); btn.textContent="Enviando…"; btn.style.opacity=".75";
-    var payload={ name:name.value.trim(), email:email.value.trim(), comuna:comuna.value.trim(), building:building.value.trim(), source:"landing" };
+    var payload={ name:name.value.trim(), email:email.value.trim(), comuna:comuna.value.trim(), building:building.value.trim(), website:$("f-website").value, source:"landing" };
     try{
-      fetch(API_LEADS,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ name:payload.name, email:payload.email, buildings:payload.building, message:"Landing embajador · Comuna: "+(payload.comuna||"—") })}).catch(function(){ queueLocal(payload); });
+      fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
+        .then(function(res){ if(!res.ok) queueLocal(payload); })
+        .catch(function(){ queueLocal(payload); });
     }catch(_){ queueLocal(payload); }
     setTimeout(function(){ showConfirm(payload.building); }, 450);
   });
