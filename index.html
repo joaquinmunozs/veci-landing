@@ -3,389 +3,383 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Veci — Trae Veci a tu comunidad</title>
-<meta name="description" content="La app social para tu comunidad. Conecta con tus vecinos, organiza tu comunidad y simplifica la vida en tu edificio." />
-<meta name="theme-color" content="#ffffff" />
-<link rel="icon" href="assets/veci-icon.jpg" />
-<link rel="apple-touch-icon" href="assets/veci-icon.jpg" />
-<meta property="og:title" content="Quiero Veci en mi edificio" />
-<meta property="og:description" content="Estoy intentando llevar Veci a nuestro edificio 💚. Entre más vecinos la pidamos, antes llegará." />
+<title>Lleva Veci a tu edificio</title>
+<meta name="description" content="Vota para que tu comunidad tenga Veci: conecta con tus vecinos, infórmate de lo que importa y paga tus gastos comunes fácil." />
+<meta name="theme-color" content="#2f6f08" />
+<link rel="icon" href="assets/max/veci-logo.png" />
+<link rel="apple-touch-icon" href="assets/max/veci-logo.png" />
+<meta property="og:title" content="Lleva Veci a tu edificio" />
+<meta property="og:description" content="¡Vota para que llevemos Veci a nuestro edificio! 🏢💚" />
 <style>
-  :root{
-    color-scheme:light;
-    --bg:#ffffff;
-    --bg-soft:#f2f8f2;
-    --ink:#14312A;
-    --ink-soft:#5C7168;
-    --line:#e7efe7;
-    --green:#2a7d3b;
-    --green-hi:#37a34c;
-    --green-ink:#1e6a2e;
-    --lime:#C6F24E;
-    --r:18px; --r-lg:24px; --r-pill:999px;
-    --shadow:0 16px 42px rgba(20,49,42,.10), 0 3px 10px rgba(20,49,42,.05);
-    --shadow-soft:0 8px 22px rgba(20,49,42,.06);
-    --dur-fast:120ms; --dur:220ms; --dur-slow:340ms;
-    --ease:cubic-bezier(.0,.0,.2,1);
-    --ease-emph:cubic-bezier(.2,.0,0,1);
-    --maxw:460px;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Inter,system-ui,sans-serif;
-    line-height:1.5; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow-x:hidden;
-  }
-  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
-  h1,h2,h3{margin:0; letter-spacing:-.035em; line-height:1.05; text-wrap:balance; font-weight:800}
-  p{margin:0}
-  a{color:inherit; text-decoration:none}
+/* Landing "Vota por tu edificio" — diseño de Max portado a estático.
+   .stage = escenario (fondo neutro desktop); .root = "celular" 9:16. */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+.stage{
+  min-height:100vh; min-height:100dvh; height:100dvh; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(120% 90% at 50% 0%, #eaf0e1 0%, #d3ddc7 55%, #c2cfb4 100%);
+}
+.root{
+  --g1:#3f8409; --g1-deep:#2f6f08; --g2:#93c000; --g3:#cbd036;
+  --bg:#f6f8f1; --card:#fff; --ink:#14201a; --body:#3a443d; --muted:#5a635c;
+  --line:#e6ebe0; --danger:#cf3826;
+  --mint-bg:#e8f3de; --lilac-bg:#ece6f7; --butter-bg:#fcefc6;
+  position:relative; width:100vw; height:100vh; height:100dvh; max-width:100vw;
+  overflow:hidden; padding:0 14px; color:var(--ink); letter-spacing:-.011em;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI Variable Display','Segoe UI',system-ui,sans-serif;
+  background:
+    linear-gradient(180deg, rgba(246,248,241,.5) 0%, rgba(246,248,241,0) 20%, rgba(246,248,241,0) 58%, rgba(246,248,241,.08) 100%),
+    url('assets/max/bg-comunidad.jpg') center bottom / cover no-repeat,
+    var(--bg);
+}
+.wrap{width:100%; max-width:440px; min-width:0; margin:0 auto; height:100%; display:flex; flex-direction:column; padding:8px 0 max(10px, env(safe-area-inset-bottom))}
 
-  /* ---------- TOP BAR (marca siempre arriba, sin espacio muerto) ---------- */
-  .topbar{position:sticky; top:0; z-index:20; background:rgba(255,255,255,.86); backdrop-filter:saturate(1.2) blur(10px); border-bottom:1px solid var(--line)}
-  .topbar .wrap{display:flex; align-items:center; justify-content:space-between; height:64px}
-  .brand{display:inline-flex; align-items:center; gap:9px}
-  .brand img.logo{height:38px; width:auto; display:block}
-  .topbar .mini{font-size:13px; font-weight:600; color:var(--green-ink)}
+/* Header */
+.header{flex:none; display:flex; align-items:center; justify-content:space-between; padding:4px 6px 2px}
+.brand{display:flex; align-items:center; gap:8px}
+.brand img{width:30px; height:30px; border-radius:8px}
+.brand b{font-size:21px; font-weight:800; color:var(--g1); letter-spacing:-.6px}
+.menuBtn{width:38px; height:38px; border-radius:11px; border:1px solid var(--line); background:rgba(255,255,255,.55); display:grid; place-items:center; cursor:pointer}
 
-  /* ---------- HERO ---------- */
-  .hero{position:relative; padding:26px 0 44px; text-align:center; overflow:hidden}
-  .aurora{position:absolute; left:50%; top:-90px; width:460px; height:320px; transform:translateX(-50%);
-    background:radial-gradient(closest-side, rgba(198,242,78,.42), transparent 72%) 42% 46%/280px 280px no-repeat,
-              radial-gradient(closest-side, rgba(42,125,59,.14), transparent 70%) 60% 32%/380px 380px no-repeat;
-    filter:blur(22px); z-index:0; pointer-events:none}
-  .hero .wrap{position:relative; z-index:1}
-  .eyebrow{display:inline-flex; align-items:center; gap:7px; margin-bottom:20px; font-size:13px; font-weight:600; color:var(--green-ink); background:var(--bg-soft); border:1px solid var(--line); padding:7px 14px; border-radius:var(--r-pill)}
-  h1.title{font-size:clamp(33px,9.2vw,42px); margin-bottom:18px}
-  .subtitle{font-size:clamp(16px,4.3vw,18px); color:var(--ink-soft); max-width:21em; margin:0 auto 32px; text-wrap:pretty}
+/* Vista */
+.view{flex:1; min-height:0; display:flex; flex-direction:column}
+.hidden{display:none !important}
 
-  /* CTA */
-  .cta{display:inline-flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:18px 24px; font-size:17px; font-weight:700; letter-spacing:-.01em; color:#fff; cursor:pointer; border:0; font-family:inherit;
-    background:linear-gradient(180deg,var(--green-hi),var(--green)); border-radius:var(--r-pill);
-    box-shadow:0 12px 26px rgba(42,125,59,.32), inset 0 1px 0 rgba(255,255,255,.22);
-    transition:transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), box-shadow var(--dur) var(--ease); -webkit-tap-highlight-color:transparent}
-  .cta:hover{background:linear-gradient(180deg,var(--green),var(--green-ink))}
-  .cta:active{transform:scale(.98)}
-  .cta:focus-visible{outline:3px solid rgba(42,125,59,.4); outline-offset:3px}
-  .cta.pulse{animation:pulse 2.8s var(--ease-emph) infinite}
-  @keyframes pulse{0%{box-shadow:0 12px 26px rgba(42,125,59,.32), 0 0 0 0 rgba(42,125,59,.28), inset 0 1px 0 rgba(255,255,255,.22)}70%{box-shadow:0 12px 26px rgba(42,125,59,.28), 0 0 0 16px rgba(42,125,59,0), inset 0 1px 0 rgba(255,255,255,.22)}100%{box-shadow:0 12px 26px rgba(42,125,59,.32), 0 0 0 0 rgba(42,125,59,0), inset 0 1px 0 rgba(255,255,255,.22)}}
-  .cta.ghost{background:#fff; color:var(--green-ink); border:1.5px solid var(--line); box-shadow:var(--shadow-soft)}
-  .cta.ghost:hover{background:var(--bg-soft); border-color:var(--green)}
+/* Intro */
+.eyebrow{flex:none; align-self:center; display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:var(--g1-deep); background:var(--mint-bg); border:1px solid rgba(83,180,0,.22); padding:5px 12px; border-radius:999px; margin:2px 0 6px}
+.h1{flex:none; text-align:center; font-size:clamp(23px,7vw,29px); line-height:1.05; font-weight:850; letter-spacing:-1px; color:var(--ink); margin:0 0 5px}
+.h1 em{font-style:normal; color:var(--g1)}
+.lead{flex:none; text-align:center; font-size:14px; line-height:1.4; color:var(--body); margin:0 auto 2px; max-width:340px}
+.spacer{flex:1; min-height:40px}
 
-  .socialproof{margin:18px 0 0; font-size:14px; color:var(--ink-soft)}
-  .socialproof b{color:var(--ink); font-variant-numeric:tabular-nums; font-weight:700}
+/* Tarjeta verde protagonista */
+.ctaCard{flex:none; position:relative; overflow:hidden; margin-top:6px; border-radius:24px; padding:14px 15px;
+  background:radial-gradient(120% 74% at 50% -8%, rgba(203,208,54,.34), transparent 60%), linear-gradient(162deg,#3f8f0f 0%,#2f6f08 58%,#275c07 100%);
+  border:1px solid rgba(255,255,255,.18); box-shadow:0 18px 40px rgba(31,71,8,.3), inset 0 1px 0 rgba(255,255,255,.22); color:#fff; text-align:center}
+.ctaHead{display:flex; align-items:center; justify-content:center; gap:9px}
+.ctaBadge{flex:none; width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.26); display:grid; place-items:center}
+.ctaBadge img{width:28px; height:28px}
+.ctaCardTitle{font-size:18.5px; font-weight:850; letter-spacing:-.4px; line-height:1.15; text-align:left}
+.ctaBtn{width:100%; min-height:56px; border:none; cursor:pointer; margin-top:12px; display:flex; align-items:center; justify-content:center; gap:10px; font-family:inherit; font-size:17.5px; font-weight:850; letter-spacing:-.3px; color:#14320a; border-radius:16px; background:linear-gradient(135deg,#d4ea6b 0%,#a8ce2a 45%,#8fbf1e 100%); box-shadow:0 10px 24px rgba(151,205,30,.5), inset 0 1px 0 rgba(255,255,255,.6)}
+.ctaBtn:active{transform:scale(.985)}
+.ctaBtn svg{width:21px; height:21px}
 
-  /* Live activity */
-  .live{margin:26px auto 0; max-width:390px; display:flex; align-items:center; gap:13px; padding:14px 16px; border:1px solid var(--line); border-radius:var(--r); background:#fff; box-shadow:var(--shadow-soft); text-align:left}
-  .live .dot{position:relative; width:11px; height:11px; flex:0 0 auto; border-radius:50%; background:#39c05a}
-  .live .dot::after{content:""; position:absolute; inset:-6px; border-radius:50%; background:rgba(57,192,90,.28); animation:ping 1.9s var(--ease) infinite}
-  @keyframes ping{0%{transform:scale(.6);opacity:.8}100%{transform:scale(1.7);opacity:0}}
-  .live .txt{font-size:13.5px; line-height:1.4}
-  .live .txt .hl{font-weight:700}
-  .live .txt.swap{animation:swap 420ms var(--ease)}
-  @keyframes swap{from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:none}}
+/* Prueba social + contadores live */
+.proof{display:flex; align-items:center; gap:10px; margin-top:11px; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.2); border-radius:14px; padding:8px 11px}
+.avatars{display:flex; flex:none}
+.avatars>*{width:32px; height:32px; border-radius:50%; margin-left:-11px; border:2px solid #eaf6dd; overflow:hidden; background:var(--mint-bg); display:grid; place-items:center; box-shadow:0 2px 5px rgba(0,0,0,.18)}
+.avatars>*:first-child{margin-left:0}
+.avatars img{width:100%; height:100%; object-fit:cover}
+.proofText{text-align:left; line-height:1.1; min-width:0}
+.proofNum{font-size:17px; font-weight:850; color:#fff; letter-spacing:-.3px}
+.proofNum b{display:inline-block; animation:pop .45s ease}
+.proofLbl{font-size:11px; color:rgba(255,255,255,.78)}
+.nowPill{margin-left:auto; flex:none; display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:5px 10px 5px 9px; font-size:11px; color:#eaffd8; font-weight:700; line-height:1; text-align:left}
+.nowPill b{display:block; font-size:14px; font-weight:850; color:#fff}
+.pulse{flex:none; position:relative; width:9px; height:9px}
+.pulse i{position:absolute; inset:0; border-radius:50%; background:#c9f06a}
+.pulse i::before{content:''; position:absolute; inset:0; border-radius:50%; background:#c9f06a; animation:ripple 1.8s ease-out infinite}
 
-  /* ---------- SECCIONES ---------- */
-  section{padding:56px 0}
-  .divider{height:1px; background:var(--line); max-width:var(--maxw); margin:0 auto}
-  .kicker{font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--green-ink); font-weight:700; text-align:center; margin-bottom:10px}
-  .sec-title{font-size:clamp(24px,6.6vw,30px); text-align:center; margin-bottom:36px; text-wrap:balance}
-  .reveal{opacity:0; transform:translateY(18px); transition:opacity var(--dur-slow) var(--ease), transform var(--dur-slow) var(--ease-emph)}
-  .reveal.in{opacity:1; transform:none}
+/* Formulario dentro de la tarjeta */
+.cardClose{position:absolute; top:12px; right:12px; z-index:2; width:32px; height:32px; border-radius:10px; cursor:pointer; background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.24); display:grid; place-items:center}
+.cardForm{display:flex; flex-direction:column; gap:9px; margin-top:12px; animation:expandIn .34s cubic-bezier(.2,.7,.3,1)}
+.inputRow{position:relative; display:flex; align-items:center}
+.inputRow svg{position:absolute; left:13px; width:18px; height:18px; pointer-events:none}
+.field{width:100%; min-height:50px; font-family:inherit; font-size:16px; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:0 15px 0 40px}
+.field::placeholder{color:#9aa79a}
+.field:focus{outline:none; border-color:#8fc95b; box-shadow:0 0 0 4px rgba(143,201,91,.18)}
+.submitBtn{width:100%; min-height:56px; border:none; cursor:pointer; margin-top:3px; display:flex; align-items:center; justify-content:center; gap:10px; font-family:inherit; font-size:17px; font-weight:800; color:#fff; border-radius:16px; background:linear-gradient(135deg,#6cc424,var(--g1)); box-shadow:0 12px 26px rgba(47,111,8,.32), inset 0 1px 0 rgba(255,255,255,.3)}
+.submitBtn:active{transform:scale(.985)}
+.submitBtn:disabled{opacity:.65}
+.submitBtn svg{width:20px; height:20px}
+.cardSecure{display:flex; align-items:center; justify-content:center; gap:6px; font-size:11.5px; color:rgba(255,255,255,.82); margin-top:6px}
+.cardSecure svg{width:14px; height:14px}
+.cardError{color:#ffdad3; font-size:12.5px; text-align:center; margin-top:4px; min-height:1em}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
 
-  /* Cómo funciona (3 pasos) */
-  .steps{display:flex; flex-direction:column; gap:16px}
-  .step{display:flex; gap:16px; align-items:flex-start; padding:20px; background:var(--bg-soft); border:1px solid var(--line); border-radius:var(--r-lg)}
-  .step .n{flex:0 0 auto; width:34px; height:34px; border-radius:50%; background:#fff; border:1.5px solid var(--line); color:var(--green-ink); font-weight:800; display:grid; place-items:center; font-size:15px; font-variant-numeric:tabular-nums}
-  .step h3{font-size:18px; margin-bottom:5px}
-  .step p{font-size:14.5px; color:var(--ink-soft); line-height:1.5}
+/* Al expandir el formulario */
+.viewForm .eyebrow, .viewForm .lead{display:none}
 
-  /* Beneficios */
-  .benefit{display:flex; gap:17px; align-items:flex-start; padding:24px 0; border-top:1px solid var(--line)}
-  .benefit:first-of-type{border-top:0}
-  .benefit .ic{font-size:27px; line-height:1; flex:0 0 auto; width:32px; text-align:center}
-  .benefit h3{font-size:19px; margin-bottom:5px}
-  .benefit p{font-size:15px; color:var(--ink-soft); line-height:1.55}
+/* Features */
+.features{flex:none; display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:8px}
+.feat{display:flex; flex-direction:column; align-items:center; text-align:center; gap:4px; padding:8px 4px; border-radius:13px; background:rgba(255,255,255,.9); backdrop-filter:blur(10px) saturate(1.4); -webkit-backdrop-filter:blur(10px) saturate(1.4); border:1px solid rgba(255,255,255,.7); box-shadow:0 6px 16px rgba(30,55,20,.14)}
+.featIc{width:34px; height:34px; border-radius:10px; display:grid; place-items:center}
+.featIc img{width:26px; height:26px}
+.feat span{font-size:10.5px; font-weight:700; color:var(--body); line-height:1.15}
 
-  /* Bloque compartir (refuerzo viral) */
-  .sharecard{text-align:center; background:linear-gradient(180deg,#f6fbf4,#eef7ec); border:1px solid var(--line); border-radius:var(--r-lg); padding:34px 24px}
-  .sharecard h2{font-size:clamp(22px,6vw,27px); margin-bottom:12px}
-  .sharecard p{font-size:15px; color:var(--ink-soft); margin:0 auto 22px; max-width:24em; text-wrap:pretty}
+/* Éxito */
+.success{flex:1; min-height:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center}
+.successArt{flex:0 1 auto; min-height:0; display:flex; align-items:center; justify-content:center; margin-bottom:4px}
+.successArt img{max-height:30vh; max-width:62%; object-fit:contain; animation:pop .5s ease}
+.successTitle{font-size:29px; font-weight:850; letter-spacing:-.8px; color:var(--ink); margin:0 0 6px}
+.successBody{font-size:15px; line-height:1.45; color:var(--body); margin:0 auto 4px; max-width:320px}
+.successBody b{color:var(--g1-deep)}
+.shareBox{display:flex; align-items:center; gap:10px; margin:14px auto 0; width:100%; max-width:360px; padding:11px 13px; background:var(--card); border:1.5px solid var(--line); border-radius:15px}
+.shareBox svg{flex:none; width:18px; height:18px}
+.shareBox code{flex:1; min-width:0; font-family:inherit; font-size:14px; color:var(--ink); text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.copyBtn{flex:none; width:38px; height:38px; border-radius:11px; border:none; background:var(--mint-bg); display:grid; place-items:center; cursor:pointer}
+.copyBtn svg{width:18px; height:18px}
+.linkBtn{background:none; border:none; color:var(--g1-deep); font-family:inherit; font-weight:800; font-size:15px; cursor:pointer; margin-top:14px; padding:8px; align-self:center}
 
-  /* ---------- FOOTER ---------- */
-  footer{background:var(--bg-soft); border-top:1px solid var(--line); padding:52px 0 40px; text-align:center}
-  footer .big{font-size:clamp(21px,5.8vw,26px); font-weight:800; letter-spacing:-.035em; text-wrap:balance; max-width:15em; margin:0 auto 30px}
-  footer .big .accent{color:var(--green)}
-  .contact{display:flex; flex-direction:column; gap:12px; max-width:320px; margin:0 auto 26px}
-  .contact a{display:flex; align-items:center; gap:12px; padding:14px 18px; background:#fff; border:1px solid var(--line); border-radius:var(--r); font-size:15px; font-weight:600; box-shadow:var(--shadow-soft); transition:transform var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease)}
-  .contact a:hover{transform:translateY(-2px); border-color:var(--green)}
-  .contact svg{width:20px; height:20px; flex:0 0 auto; color:var(--green)}
-  .contact span{color:var(--ink)}
-  footer .legal{font-size:12.5px; color:var(--ink-soft); margin-top:22px; line-height:1.6}
+.footer{flex:none; text-align:center; font-size:11px; color:var(--muted); padding-top:5px}
+.footer b{color:var(--g1)}
+.footer a{color:var(--muted); text-decoration:none}
+.footer a:hover{color:var(--g1-deep)}
 
-  /* ---------- MODAL ---------- */
-  .overlay{position:fixed; inset:0; z-index:60; display:none; align-items:flex-end; justify-content:center; background:rgba(20,49,42,.46); backdrop-filter:blur(3px)}
-  .overlay.open{display:flex; animation:fade var(--dur) var(--ease)}
-  @keyframes fade{from{opacity:0}to{opacity:1}}
-  .sheet{position:relative; width:100%; max-width:var(--maxw); background:#fff; border-radius:26px 26px 0 0; padding:24px 24px calc(28px + env(safe-area-inset-bottom)); box-shadow:0 -18px 50px rgba(20,49,42,.22); transform:translateY(20px); opacity:0; transition:transform var(--dur-slow) var(--ease-emph), opacity var(--dur) var(--ease); max-height:92vh; overflow-y:auto}
-  .overlay.open .sheet{transform:none; opacity:1}
-  @media(min-width:520px){ .overlay{align-items:center} .sheet{border-radius:26px; margin:0 16px} }
-  .grip{width:40px; height:4px; border-radius:99px; background:var(--line); margin:2px auto 20px}
-  .sheet h2{font-size:24px; margin-bottom:7px}
-  .sheet .lead{font-size:15px; color:var(--ink-soft); margin-bottom:22px; text-wrap:pretty}
-  .field{margin-bottom:15px}
-  .field label{display:block; font-size:13px; font-weight:600; color:var(--ink); margin:0 0 7px 2px}
-  .field input{width:100%; padding:15px 16px; font-size:16px; font-family:inherit; color:var(--ink); background:var(--bg-soft); border:1.5px solid transparent; border-radius:14px; outline:none; transition:border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease)}
-  .field input::placeholder{color:#9db0a7}
-  .field input:focus{border-color:var(--green); background:#fff}
-  .field.err input{border-color:#d1483a; background:#fdf3f2}
-  /* honeypot anti-bot: oculto para humanos */
-  .hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
-  .sheet .cta{margin-top:10px}
-  .sheet .fineprint{font-size:12px; color:var(--ink-soft); text-align:center; margin-top:14px}
-  .sheet.shake{animation:shake 220ms var(--ease)}
-  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-  .closex{position:absolute; top:14px; right:16px; width:34px; height:34px; border:0; background:transparent; color:var(--ink-soft); font-size:22px; cursor:pointer; border-radius:50%}
-
-  /* ---------- CONFIRMACIÓN ---------- */
-  .confirm{text-align:center; display:none}
-  .confirm.show{display:block}
-  .checkwrap{width:82px; height:82px; margin:6px auto 20px; border-radius:50%; background:linear-gradient(180deg,var(--green-hi),var(--green)); display:grid; place-items:center; box-shadow:0 12px 30px rgba(42,125,59,.34); animation:pop .5s var(--ease-emph)}
-  @keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
-  .checkwrap svg{width:42px; height:42px}
-  .checkwrap path{stroke-dasharray:40; stroke-dashoffset:40; animation:draw .5s .18s var(--ease) forwards}
-  @keyframes draw{to{stroke-dashoffset:0}}
-  .confirm h2{font-size:25px; margin-bottom:9px}
-  .confirm .lead{font-size:15px; color:var(--ink-soft); margin:0 auto 24px; max-width:24em; text-wrap:pretty}
-  .rank{background:var(--bg-soft); border:1px solid var(--line); border-radius:var(--r); padding:18px; margin-bottom:18px; text-align:left}
-  .rank .top{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:13px}
-  .rank .top .b{font-size:15px; font-weight:700}
-  .rank .top .pos{font-size:15px; font-weight:800; color:var(--green); font-variant-numeric:tabular-nums}
-  .bar{height:12px; border-radius:99px; background:#e2ece2; overflow:hidden}
-  .bar > i{display:block; height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--green-hi),var(--green)); transition:width 1s var(--ease-emph)}
-  .rank .count{font-size:13px; color:var(--ink-soft); margin-top:10px}
-  .rank .count b{color:var(--ink)}
-  .unlocked{color:var(--green); font-weight:700}
-
-  .toast{position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px); z-index:70; background:var(--ink); color:#fff; font-size:14px; font-weight:600; padding:13px 20px; border-radius:var(--r-pill); box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease-emph); max-width:90vw}
-  .toast.show{opacity:1; transform:translate(-50%,0)}
-
-  @media (prefers-reduced-motion: reduce){
-    *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
-    .reveal{opacity:1; transform:none}
-  }
+@keyframes expandIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(.5); opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1); opacity:1}}
+@keyframes ripple{0%{transform:scale(1); opacity:.6} 100%{transform:scale(3.2); opacity:0}}
+@media (prefers-reduced-motion: reduce){ .proofNum b,.successArt img{animation:none} .pulse i::before{animation:none} }
+@media (max-height:700px){ .eyebrow,.lead{display:none} .h1{font-size:clamp(21px,6.4vw,25px)} .features{display:none} }
+@media (min-width:560px){
+  .stage{padding:22px}
+  .root{width:auto; height:min(100dvh - 44px, 960px); aspect-ratio:9/16; max-width:calc(100vw - 44px); border-radius:34px; box-shadow:0 30px 90px rgba(20,40,12,.4), 0 0 0 1px rgba(0,0,0,.05)}
+}
 </style>
 </head>
 <body>
+<div class="stage">
+<div class="root">
+<div class="wrap">
 
-<!-- ============ TOP BAR ============ -->
-<div class="topbar">
-  <div class="wrap">
-    <span class="brand">
-      <img class="logo" src="assets/veci-logo.jpg" alt="Veci" />
-    </span>
-    <span class="mini">💚 tu comunidad</span>
-  </div>
-</div>
+  <header class="header">
+    <div class="brand"><img src="assets/max/veci-logo.png" alt="" /><b>Veci</b></div>
+    <button class="menuBtn" id="menuBtn" aria-label="Ir a votar">
+      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2f6f08" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </header>
 
-<!-- ============ HERO ============ -->
-<header class="hero">
-  <div class="aurora"></div>
-  <div class="wrap">
-    <div class="eyebrow">🏡 Para residentes de tu edificio</div>
-    <h1 class="title">La app social para tu comunidad.</h1>
-    <p class="subtitle">Conecta con tus vecinos, organiza tu comunidad y simplifica la vida en tu edificio.</p>
-    <button class="cta pulse" id="openBtn">Quiero Veci en mi edificio</button>
-    <p class="socialproof">Más de <b id="counter">2.143</b> residentes ya quieren llevar Veci a su comunidad.</p>
-    <div class="live" aria-live="polite">
-      <span class="dot"></span>
-      <span class="txt" id="liveTxt"><span class="hl">En este momento 4 residentes</span> están solicitando Veci.</span>
-    </div>
-  </div>
-</header>
+  <!-- INTRO + FORM (misma vista, la tarjeta se expande) -->
+  <div class="view" id="mainView">
+    <span class="eyebrow">App social para tu comunidad</span>
+    <h1 class="h1">La comunidad empieza <em>contigo</em></h1>
+    <p class="lead">Conecta con tus vecinos, participa, infórmate y haz que tu comunidad sea mejor.</p>
 
-<div class="divider"></div>
+    <div class="spacer"></div>
 
-<!-- ============ CÓMO FUNCIONA ============ -->
-<section>
-  <div class="wrap reveal">
-    <p class="kicker">Así de fácil</p>
-    <h2 class="sec-title">Traer Veci depende de ti y tus vecinos</h2>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><div><h3>Pídelo</h3><p>Deja tus datos en 20 segundos. Solo nombre, correo, comuna y tu edificio.</p></div></div>
-      <div class="step"><span class="n">2</span><div><h3>Comparte con tus vecinos</h3><p>Mientras más vecinos lo pidan, más rápido llegamos. Esta es la parte que de verdad importa.</p></div></div>
-      <div class="step"><span class="n">3</span><div><h3>Llega Veci</h3><p>Cuando tu edificio junta suficientes vecinos, contactamos a la administración.</p></div></div>
-    </div>
-  </div>
-</section>
+    <div class="ctaCard">
+      <button class="cardClose hidden" id="closeForm" aria-label="Volver">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
 
-<div class="divider"></div>
-
-<!-- ============ BENEFICIOS ============ -->
-<section>
-  <div class="wrap reveal">
-    <p class="kicker">Una sola app</p>
-    <h2 class="sec-title">Todo para vivir mejor en comunidad</h2>
-    <div class="benefit"><div class="ic">💬</div><div><h3>Comunidad</h3><p>Conecta con tus vecinos.</p></div></div>
-    <div class="benefit"><div class="ic">💸</div><div><h3>Pagos</h3><p>Paga tus gastos comunes y cuentas de forma simple y más accesible.</p></div></div>
-    <div class="benefit"><div class="ic">❤️</div><div><h3>Todo en un lugar</h3><p>Una sola app para vivir mejor en comunidad.</p></div></div>
-  </div>
-</section>
-
-<!-- ============ REFUERZO COMPARTIR ============ -->
-<section style="padding-top:8px">
-  <div class="wrap reveal">
-    <div class="sharecard">
-      <h2>Un edificio se mueve cuando se mueven sus vecinos 💚</h2>
-      <p>Comparte el enlace con tu grupo del edificio. Cada vecino que lo pide acerca a Veci un paso más.</p>
-      <button class="cta" id="shareTop">Compartir con mis vecinos</button>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FOOTER ============ -->
-<footer>
-  <div class="wrap reveal">
-    <p class="big">No estamos construyendo otra app.<br>Estamos construyendo <span class="accent">la comunidad del futuro.</span></p>
-    <img src="assets/veci-logo.jpg" alt="Veci" style="height:56px; width:auto" />
-
-    <div class="contact" style="margin-top:24px">
-      <a href="mailto:contacto@teamcondorcl.com">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-        <span>contacto@teamcondorcl.com</span>
-      </a>
-      <a href="https://wa.me/56988989824" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.6 4.7-1.2A10 10 0 1 0 12 2Zm4.4 12.1c-.2.6-1.2 1.1-1.7 1.1-.4 0-1 .1-3.2-.9-2.7-1.2-4.4-4-4.5-4.1-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .5.4l.7 1.7c.1.1.1.3 0 .4-.4.8-.8.8-.6 1.2A6.5 6.5 0 0 0 12 14c.2.1.3.1.5-.1s.6-.8.8-1 .3-.2.5-.1l1.6.8c.2.1.3.2.3.3Z"/></svg>
-        <span>+56 9 8898 9824</span>
-      </a>
-      <a href="https://instagram.com/veci.cl" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-        <span>@veci.cl</span>
-      </a>
-    </div>
-    <p class="legal">© <span id="year">2026</span> Veci · Hecho con 💚 para las comunidades de Chile</p>
-  </div>
-</footer>
-
-<!-- ============ MODAL / FORMULARIO + CONFIRMACIÓN ============ -->
-<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Solicitar Veci">
-  <div class="sheet" id="sheet">
-    <button class="closex" id="closeBtn" aria-label="Cerrar">×</button>
-    <div class="grip"></div>
-
-    <div id="formView">
-      <h2>Trae Veci a tu edificio</h2>
-      <p class="lead">Solo 4 datos y 20 segundos. Mientras más vecinos lo pidan, más rápido llegamos.</p>
-      <form id="form" novalidate autocomplete="on">
-        <div class="field"><label for="f-name">Nombre</label><input id="f-name" name="name" type="text" maxlength="80" autocomplete="given-name" placeholder="Tu nombre" /></div>
-        <div class="field"><label for="f-email">Correo</label><input id="f-email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" placeholder="tucorreo@mail.com" /></div>
-        <div class="field"><label for="f-comuna">Comuna</label><input id="f-comuna" name="comuna" type="text" maxlength="60" placeholder="Providencia, Las Condes…" /></div>
-        <div class="field"><label for="f-building">Nombre del edificio o condominio</label><input id="f-building" name="building" type="text" maxlength="80" placeholder="Ej. Edificio Parque Lyon" /></div>
-        <!-- honeypot: si un bot lo llena, descartamos el envío -->
-        <div class="hp" aria-hidden="true"><label>No llenar<input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
-        <button type="submit" class="cta" id="submitBtn">Quiero Veci aquí</button>
-        <p class="fineprint">Solo usamos tus datos para llevar Veci a tu comunidad.</p>
-      </form>
-    </div>
-
-    <div class="confirm" id="confirmView">
-      <div class="checkwrap"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <h2>🎉 ¡Listo!</h2>
-      <p class="lead">Acabas de ayudar a traer Veci a tu comunidad. Ahora viene lo más importante: entre más vecinos lo pidan, más rápido podremos llegar.</p>
-      <div class="rank">
-        <div class="top"><span class="b" id="rankBuilding">Tu edificio</span><span class="pos">Puesto #<span id="rankPos">127</span></span></div>
-        <div class="bar"><i id="barFill"></i></div>
-        <p class="count" id="rankCount"><b>18</b> de 50 vecinos · faltan <b>12</b> para priorizar una reunión con la administración.</p>
+      <div class="ctaHead">
+        <span class="ctaBadge"><img src="assets/max/ic-pay.png" alt="" /></span>
+        <span class="ctaCardTitle" id="cardTitle">Tu edificio también<br>puede ser parte</span>
       </div>
-      <button class="cta" id="shareBtn">Invitar vecinos</button>
-      <p class="fineprint">Compartir el enlace es lo que de verdad hace llegar a Veci.</p>
+
+      <!-- intro -->
+      <div id="introBlock">
+        <button class="ctaBtn" id="openForm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#14320a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 2 4.5 5 4.5 8.5 0 2-1 4-2.5 5.5L12 18l-2-2C8.5 14.5 7.5 12.5 7.5 10.5 7.5 7 9 4 12 2Z"/><circle cx="12" cy="9.5" r="1.6"/><path d="M9 18l-2 4 3-1 2 2 2-2 3 1-2-4"/></svg>
+          Quiero Veci en mi edificio
+        </button>
+        <div class="proof">
+          <div class="avatars">
+            <span><img src="assets/max/avatar-vecina.png" alt="" /></span>
+            <span><img src="assets/max/ic-avatar.png" alt="" /></span>
+            <span style="background:linear-gradient(135deg,#8fe04a,#53b400)">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3"/><circle cx="16.5" cy="10" r="2.4"/><path d="M4 19a5 5 0 0 1 10 0M14.5 19a5 5 0 0 1 5.5-4"/></svg>
+            </span>
+          </div>
+          <div class="proofText">
+            <div class="proofNum"><b id="enrolled">2.341</b></div>
+            <div class="proofLbl">vecinos ya se inscribieron</div>
+          </div>
+          <div class="nowPill">
+            <span class="pulse"><i></i></span>
+            <span><b id="nowCount">19</b> ahora mismo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- form (expande la misma tarjeta) -->
+      <div id="formBlock" class="cardForm hidden">
+        <div class="inputRow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          <input class="field" id="f-name" placeholder="Nombre completo" maxlength="80" autocomplete="name" aria-label="Nombre completo" />
+        </div>
+        <div class="inputRow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          <input class="field" id="f-email" type="email" inputmode="email" placeholder="Tu correo" maxlength="120" autocomplete="email" aria-label="Tu correo" />
+        </div>
+        <div class="inputRow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <input class="field" id="f-comuna" placeholder="Comuna" maxlength="60" aria-label="Comuna" />
+        </div>
+        <div class="inputRow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/></svg>
+          <input class="field" id="f-building" placeholder="Nombre de tu edificio" maxlength="80" aria-label="Nombre de tu edificio" />
+        </div>
+        <div class="hp" aria-hidden="true"><input id="f-website" tabindex="-1" autocomplete="off" /></div>
+        <button class="submitBtn" id="submitBtn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12l16-7-7 16-2-7-7-2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+          Enviar voto
+        </button>
+        <p class="cardError" id="formError"></p>
+        <p class="cardSecure">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#eafbdd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          Tu información está segura con nosotros.
+        </p>
+      </div>
+    </div>
+
+    <div class="features" id="features">
+      <div class="feat"><div class="featIc" style="background:var(--mint-bg)"><img src="assets/max/ic-chat.png" alt="" /></div><span>Conecta con tus vecinos</span></div>
+      <div class="feat"><div class="featIc" style="background:var(--lilac-bg)"><img src="assets/max/ic-market.png" alt="" /></div><span>Compra y vende en tu Mercado</span></div>
+      <div class="feat"><div class="featIc" style="background:var(--butter-bg)"><img src="assets/max/ic-pay.png" alt="" /></div><span>Paga tus gastos comunes</span></div>
     </div>
   </div>
-</div>
 
-<div class="toast" id="toast">Enlace copiado ✓</div>
+  <!-- ÉXITO -->
+  <div class="view hidden" id="successView">
+    <div class="success">
+      <div class="successArt"><img src="assets/max/voto-exito.png" alt="Voto registrado" /></div>
+      <h1 class="successTitle">¡Felicitaciones!</h1>
+      <p class="successBody">Acabas de votar para que llevemos <b>Veci</b> a tu edificio.</p>
+      <p class="successBody">Ya son <b id="enrolledSuccess">2.341</b> vecinos. Entre más voten, más rápido llegamos.</p>
+      <div class="shareBox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2f6f08" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+        <code id="shareUrl">veci.condorai.cl</code>
+        <button class="copyBtn" id="copyBtn" aria-label="Copiar link">
+          <svg id="copyIcon" viewBox="0 0 24 24" fill="none" stroke="#2f6f08" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          <svg id="checkIcon" class="hidden" viewBox="0 0 24 24" fill="none" stroke="#2f6f08" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <button class="submitBtn" id="shareBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13M8 7l4-4 4 4"/></svg>
+      Compártelo con tus vecinos
+    </button>
+    <button class="linkBtn" id="backHome">Volver al inicio</button>
+  </div>
+
+  <div class="footer">
+    <b>Veci</b> · La comunidad empieza contigo ·
+    <a href="mailto:contacto@teamcondorcl.com">contacto@teamcondorcl.com</a> ·
+    <a href="https://wa.me/56988989824" target="_blank" rel="noopener">+56 9 8898 9824</a> ·
+    <a href="https://instagram.com/veci.cl" target="_blank" rel="noopener">@veci.cl</a>
+  </div>
+
+</div>
+</div>
+</div>
 
 <script>
 (function(){
   "use strict";
-  var API_URL = "https://veci-api-e0px.onrender.com/api/v1/community-requests";
-  var SHARE_URL = window.location.href;
-  var SHARE_TEXT = "Estoy intentando llevar Veci a nuestro edificio 💚. Entre más vecinos la pidamos, antes llegará.";
+  var API = "https://veci-api-e0px.onrender.com/api/v1/community-requests";
+  var SHARE_BASE = "https://veci.condorai.cl";
   var $ = function(id){ return document.getElementById(id); };
+  var fmt = function(n){ return n.toLocaleString("es-CL"); };
   var startedAt = Date.now();
-  $("year").textContent = new Date().getFullYear();
+  var enrolled = null, shareCode = "";
 
-  /* Contador social que crece */
-  var count = 2143, counterEl = $("counter");
-  function fmt(n){ return n.toLocaleString("es-CL"); }
-  setInterval(function(){ count += Math.floor(Math.random()*3)+1; counterEl.textContent = fmt(count); counterEl.animate([{opacity:.4},{opacity:1}],{duration:400, easing:"ease-out"}); }, 6500);
+  /* Total real desde el backend (base + reales) */
+  fetch(API + "/count", {cache:"no-store"}).then(function(r){ return r.json(); })
+    .then(function(d){ enrolled = d.count || 2341; paint(); })
+    .catch(function(){ enrolled = 2341; paint(); });
+  function paint(){
+    $("enrolled").textContent = fmt(enrolled);
+    $("enrolledSuccess").textContent = fmt(enrolled);
+  }
 
-  /* Actividad en vivo */
-  var counts=[2,5,3,7,4,6];
-  var msgs=['Martín quiere Veci en <span class="hl">Providencia</span>.','Camila acaba de solicitar Veci para <span class="hl">Las Condes</span>.','Tomás invitó a <span class="hl">3 vecinos</span>.','Fernanda quiere Veci en <span class="hl">Ñuñoa</span>.','Sebastián acaba de sumar a su <span class="hl">edificio</span>.'];
-  var liveTxt=$("liveTxt"), li=0, ci=0, showMsg=false;
-  setInterval(function(){ showMsg=!showMsg; var html; if(showMsg){ html=msgs[li%msgs.length]; li++; } else { ci=(ci+1)%counts.length; html='<span class="hl">En este momento '+counts[ci]+' residentes</span> están solicitando Veci.'; } liveTxt.innerHTML=html; liveTxt.classList.remove("swap"); void liveTxt.offsetWidth; liveTxt.classList.add("swap"); }, 4200);
+  /* Contador LIVE inscritos: sube solo (otros vecinos del país) */
+  setInterval(function(){
+    if(enrolled == null) return;
+    enrolled += (Math.random() < .7 ? 1 : 0) + (Math.random() < .2 ? 1 : 0);
+    paint();
+  }, 4800);
 
-  /* Reveal al scroll */
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }); },{threshold:.14});
-  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  /* "Ahora mismo": paseo aleatorio suave ~9..44 */
+  var now = 14 + Math.floor(Math.random()*16);
+  $("nowCount").textContent = now;
+  setInterval(function(){
+    now = Math.min(44, Math.max(9, now + Math.round((Math.random()-.45)*6)));
+    $("nowCount").textContent = now;
+  }, 2600);
 
-  /* Modal */
-  var overlay=$("overlay"), sheet=$("sheet"), openBtn=$("openBtn");
-  function openModal(){ overlay.classList.add("open"); document.body.style.overflow="hidden"; setTimeout(function(){ $("f-name").focus(); },320); openBtn.classList.remove("pulse"); }
-  function closeModal(){ overlay.classList.remove("open"); document.body.style.overflow=""; }
-  openBtn.addEventListener("click", openModal);
-  $("closeBtn").addEventListener("click", closeModal);
-  overlay.addEventListener("click", function(e){ if(e.target===overlay) closeModal(); });
-  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && overlay.classList.contains("open")) closeModal(); });
+  /* Vistas: intro <-> form (misma tarjeta) <-> éxito */
+  var mainView=$("mainView"), successView=$("successView");
+  function showForm(){
+    $("introBlock").classList.add("hidden");
+    $("formBlock").classList.remove("hidden");
+    $("closeForm").classList.remove("hidden");
+    $("features").classList.add("hidden");
+    $("cardTitle").innerHTML = "Cuéntanos<br>dónde vives";
+    mainView.classList.add("viewForm");
+    setTimeout(function(){ $("f-name").focus(); }, 250);
+  }
+  function showIntro(){
+    $("introBlock").classList.remove("hidden");
+    $("formBlock").classList.add("hidden");
+    $("closeForm").classList.add("hidden");
+    $("features").classList.remove("hidden");
+    $("cardTitle").innerHTML = "Tu edificio también<br>puede ser parte";
+    mainView.classList.remove("viewForm");
+    successView.classList.add("hidden");
+    mainView.classList.remove("hidden");
+  }
+  function showSuccess(){
+    mainView.classList.add("hidden");
+    successView.classList.remove("hidden");
+    paint();
+  }
+  $("openForm").addEventListener("click", showForm);
+  $("menuBtn").addEventListener("click", showForm);
+  $("closeForm").addEventListener("click", showIntro);
+  $("backHome").addEventListener("click", showIntro);
 
-  /* Envío del formulario */
-  var form=$("form");
-  function markErr(input, bad){ input.parentElement.classList.toggle("err", bad); }
-  form.addEventListener("submit", function(e){
-    e.preventDefault();
-    if($("f-website").value){ return; }                 // honeypot: bot -> se ignora silenciosamente
-    if(Date.now()-startedAt < 1500){ return; }          // envío demasiado rápido = bot
-    var name=$("f-name"), email=$("f-email"), comuna=$("f-comuna"), building=$("f-building");
-    var okName=name.value.trim().length>1, okEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
-    markErr(name,!okName); markErr(email,!okEmail);
-    if(!okName||!okEmail){ sheet.classList.remove("shake"); void sheet.offsetWidth; sheet.classList.add("shake"); return; }
-    var btn=$("submitBtn"); btn.textContent="Enviando…"; btn.style.opacity=".75";
-    var payload={ name:name.value.trim(), email:email.value.trim(), comuna:comuna.value.trim(), building:building.value.trim(), website:$("f-website").value, source:"landing" };
-    try{
-      fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})
-        .then(function(res){ if(!res.ok) queueLocal(payload); })
-        .catch(function(){ queueLocal(payload); });
-    }catch(_){ queueLocal(payload); }
-    setTimeout(function(){ showConfirm(payload.building); }, 450);
+  /* QA por hash (#form / #exito) */
+  if(location.hash === "#form") showForm();
+  if(location.hash === "#exito") { shareCode="demo42"; setShare(); showSuccess(); }
+
+  /* Envío: POST a la BD real (community-requests) */
+  var sending = false;
+  $("submitBtn").addEventListener("click", function(){
+    if(sending) return;
+    var err = $("formError"); err.textContent = "";
+    if($("f-website").value){ return; }                 /* honeypot: bot */
+    if(Date.now() - startedAt < 1500){ return; }        /* demasiado rápido: bot */
+    var name=$("f-name").value.trim(), email=$("f-email").value.trim().toLowerCase(),
+        comuna=$("f-comuna").value.trim(), building=$("f-building").value.trim();
+    if(!name || !building){ err.textContent = "Escribe tu nombre y el nombre de tu edificio."; return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ err.textContent = "Escribe un correo válido para poder avisarte."; return; }
+    sending = true;
+    var btn=$("submitBtn"); btn.disabled = true;
+    var payload = { name:name, email:email, comuna:comuna, building:building, website:$("f-website").value, source:"landing-vota" };
+    fetch(API, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload) })
+      .then(function(r){
+        if(!r.ok) throw new Error("http " + r.status);
+        enrolled = (enrolled==null?2341:enrolled) + 1;
+        shareCode = Math.random().toString(36).slice(2,8);
+        setShare(); showSuccess();
+      })
+      .catch(function(){
+        /* Plan B: guardar local para no perder el voto + seguir el flujo */
+        try{ var q=JSON.parse(localStorage.getItem("veci_pending")||"[]"); q.push(payload); localStorage.setItem("veci_pending", JSON.stringify(q).slice(0,20000)); }catch(_){}
+        enrolled = (enrolled==null?2341:enrolled) + 1;
+        shareCode = Math.random().toString(36).slice(2,8);
+        setShare(); showSuccess();
+      })
+      .finally(function(){ sending=false; btn.disabled=false; });
   });
-  // Plan B cliente: si el envío falla, guardamos localmente para no perder el dato
-  function queueLocal(p){ try{ var q=JSON.parse(localStorage.getItem("veci_pending")||"[]"); q.push(p); localStorage.setItem("veci_pending", JSON.stringify(q).slice(0,20000)); }catch(_){}}
 
-  function showConfirm(building){
-    $("formView").style.display="none";
-    $("confirmView").classList.add("show");
-    $("rankBuilding").textContent = building ? building : "Tu edificio";  // textContent = a prueba de XSS
-    var pos=90+Math.floor(Math.random()*80), have=12+Math.floor(Math.random()*22), goal=50, missing=Math.max(goal-have,0);
-    $("rankPos").textContent=pos;
-    $("rankCount").innerHTML = have>=goal ? '<span class="unlocked">🎉 Comunidad desbloqueada.</span> Nos pondremos en contacto con la administración.' : '<b>'+have+'</b> de '+goal+' vecinos · faltan <b>'+missing+'</b> para priorizar una reunión con la administración.';
-    setTimeout(function(){ $("barFill").style.width=Math.min(have/goal*100,100)+"%"; }, 120);
-    var t=0, from=pos+40, pe=$("rankPos");
-    var iv=setInterval(function(){ t++; var v=Math.round(from-(from-pos)*(t/18)); pe.textContent=v; if(t>=18){pe.textContent=pos; clearInterval(iv);} }, 26);
-  }
-
-  /* Compartir (menú nativo) */
-  async function doShare(){
-    var data={ title:"Quiero Veci en mi edificio", text:SHARE_TEXT, url:SHARE_URL };
-    if(navigator.share){ try{ await navigator.share(data); }catch(_){} }
-    else { try{ await navigator.clipboard.writeText(SHARE_TEXT+" "+SHARE_URL); showToast("Enlace copiado ✓"); }catch(_){ showToast("Copia este enlace: "+SHARE_URL); } }
-  }
-  $("shareBtn").addEventListener("click", doShare);
-  $("shareTop").addEventListener("click", doShare);
-
-  var toast=$("toast"), tTimer;
-  function showToast(msg){ toast.textContent=msg; toast.classList.add("show"); clearTimeout(tTimer); tTimer=setTimeout(function(){ toast.classList.remove("show"); },2600); }
+  /* Compartir */
+  function setShare(){ $("shareUrl").textContent = "veci.condorai.cl/?ref=" + (shareCode || "veci"); }
+  function shareLink(){ return SHARE_BASE + "/?ref=" + (shareCode || "veci"); }
+  $("copyBtn").addEventListener("click", function(){
+    navigator.clipboard.writeText(shareLink()).then(function(){
+      $("copyIcon").classList.add("hidden"); $("checkIcon").classList.remove("hidden");
+      setTimeout(function(){ $("copyIcon").classList.remove("hidden"); $("checkIcon").classList.add("hidden"); }, 1800);
+    }).catch(function(){});
+  });
+  $("shareBtn").addEventListener("click", function(){
+    var data = { title:"Veci", text:"¡Vota para que llevemos Veci a nuestro edificio! 🏢💚", url:shareLink() };
+    if(navigator.share){ navigator.share(data).catch(function(){}); }
+    else { $("copyBtn").click(); }
+  });
 })();
 </script>
 </body>
