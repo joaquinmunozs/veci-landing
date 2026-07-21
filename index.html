@@ -201,16 +201,20 @@ html,body{margin:0;padding:0}
           <input class="field" id="f-name" placeholder="Nombre completo" maxlength="80" autocomplete="name" aria-label="Nombre completo" />
         </div>
         <div class="inputRow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-          <input class="field" id="f-email" type="email" inputmode="email" placeholder="Tu correo" maxlength="120" autocomplete="email" aria-label="Tu correo" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2Z"/></svg>
+          <input class="field" id="f-phone" type="tel" inputmode="tel" placeholder="Tu teléfono (WhatsApp)" maxlength="20" autocomplete="tel" aria-label="Tu teléfono" />
         </div>
         <div class="inputRow">
           <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
           <input class="field" id="f-comuna" placeholder="Comuna" maxlength="60" aria-label="Comuna" />
         </div>
         <div class="inputRow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-5h6v5"/></svg>
+          <input class="field" id="f-address" placeholder="Dirección del edificio (calle y número)" maxlength="160" autocomplete="street-address" aria-label="Dirección del edificio" />
+        </div>
+        <div class="inputRow">
           <svg viewBox="0 0 24 24" fill="none" stroke="#7c8a76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/></svg>
-          <input class="field" id="f-building" placeholder="Nombre de tu edificio" maxlength="80" aria-label="Nombre de tu edificio" />
+          <input class="field" id="f-building" placeholder="Nombre del edificio (opcional)" maxlength="80" aria-label="Nombre del edificio" />
         </div>
         <div class="hp" aria-hidden="true"><input id="f-website" tabindex="-1" autocomplete="off" /></div>
         <button class="submitBtn" id="submitBtn">
@@ -342,13 +346,17 @@ html,body{margin:0;padding:0}
     var err = $("formError"); err.textContent = "";
     if($("f-website").value){ return; }                 /* honeypot: bot */
     if(Date.now() - startedAt < 1500){ return; }        /* demasiado rápido: bot */
-    var name=$("f-name").value.trim(), email=$("f-email").value.trim().toLowerCase(),
-        comuna=$("f-comuna").value.trim(), building=$("f-building").value.trim();
-    if(!name || !building){ err.textContent = "Escribe tu nombre y el nombre de tu edificio."; return; }
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ err.textContent = "Escribe un correo válido para poder avisarte."; return; }
+    var name=$("f-name").value.trim(), phone=$("f-phone").value.trim(),
+        comuna=$("f-comuna").value.trim(), address=$("f-address").value.trim(),
+        building=$("f-building").value.trim();
+    if(!name){ err.textContent = "Escribe tu nombre."; return; }
+    /* Teléfono chileno: 8-9 dígitos tras limpiar (con o sin +56). */
+    var phoneDigits = phone.replace(/\D/g, "");
+    if(phoneDigits.length < 8){ err.textContent = "Escribe un teléfono válido para poder contactarte."; return; }
+    if(!address || !comuna){ err.textContent = "Escribe la comuna y la dirección del edificio (calle y número)."; return; }
     sending = true;
     var btn=$("submitBtn"); btn.disabled = true;
-    var payload = { name:name, email:email, comuna:comuna, building:building, website:$("f-website").value, source:"landing-vota" };
+    var payload = { name:name, phone:phone, comuna:comuna, address:address, building:building, website:$("f-website").value, source:"landing-vota" };
     fetch(API, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload) })
       .then(function(r){
         if(!r.ok) throw new Error("http " + r.status);
